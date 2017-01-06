@@ -12,7 +12,7 @@ $ go get github.com/jimsmart/chapi
 ```go
 import "github.com/jimsmart/chapi"
 
-chapi.APIKey = "[YOUR_COMPANIES_HOUSE_API_KEY]"
+chapi.APIKey = "YOUR_COMPANIES_HOUSE_API_KEY"
 ```
 
 You must provide a valid Companies House API key.
