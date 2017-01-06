@@ -12,7 +12,7 @@ $ go get github.com/jimsmart/chapi
 ```go
 import "github.com/jimsmart/chapi"
 
-chapi.APIKey = "YOUR_COMPANIES_HOUSE_API_KEY"
+chapi.APIKey = "your_Companies_House_API_key"
 ```
 
 You must provide a valid Companies House API key.
@@ -22,7 +22,7 @@ You must provide a valid Companies House API key.
 3. Either use the key directly in your code, as shown above — or stash it externally in your `.zshrc` (or equivalent), for example:
 
 ```bash
-export COMPANIES_HOUSE_API_KEY=paste_your_key_here
+export COMPANIES_HOUSE_API_KEY=your_Companies_House_API_key
 ```
 
 Then use some setup code similar to this to reference the API key from the environment variable:

@@ -2,6 +2,7 @@ package chapi
 
 import (
 	"encoding/json"
+	"log"
 
 	"github.com/jimsmart/chapi/ch"
 )
@@ -18,6 +19,9 @@ type Client struct {
 
 // NewClient creats a new instance of Client, configured to use the given API key.
 func NewClient(apiKey string) *Client {
+	if apiKey == "" {
+		log.Println(apiKey)
+	}
 	return &Client{
 		RESTClient: &RESTClient{
 			APIKey: apiKey,

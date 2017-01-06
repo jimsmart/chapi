@@ -870,7 +870,7 @@ type SearchResource struct {
 		}
 		AddressSnippet string `json:"address_snippet"`
 		Description    string
-		DescriptionID  []string `json:"description_identifier"` // integer? TODO(js) PLurals?
+		DescriptionIDs []string `json:"description_identifiers"`
 		Kind           string
 		Links          struct {
 			Self string
@@ -887,6 +887,7 @@ type SearchResource struct {
 	Kind         string
 	StartIndex   int `json:"start_index"`
 	TotalResults int `json:"total_results"`
+	// PageNumber   int `json:"page_number"` // Undocumented.
 }
 
 type CompanySearchResource struct {
@@ -909,7 +910,7 @@ type CompanySearchResource struct {
 		DateOfCessation string `json:"date_of_cessation"` // date
 		DateOfCreation  string `json:"date_of_creation"`  // date
 		Description     string
-		DescriptionID   []string `json:"description_identifier"` // integer? TODO(js) Plurals?
+		DescriptionIDs  []string `json:"description_identifiers"`
 		Kind            string
 		Links           struct {
 			Self string
@@ -948,7 +949,7 @@ type OfficerSearchResource struct {
 			Year  int
 		} `json:"date_of_birth"`
 		Description    string
-		DescriptionIDs []string `json:"description_identifiers"` // []integer? TODO(js) Plurals
+		DescriptionIDs []string `json:"description_identifiers"`
 		Kind           string
 		Links          struct {
 			Self string
@@ -986,7 +987,7 @@ type DisqualifiedOfficerSearchResource struct {
 		// AppointmentCount int    `json:"appointment_count"`
 		DateOfBirth    string `json:"date_of_birth"` // date
 		Description    string
-		DescriptionIDs []string `json:"description_identifiers"` // []integer TODO(js) Plurals?
+		DescriptionIDs []string `json:"description_identifiers"`
 		Kind           string
 		Links          struct {
 			Self string
