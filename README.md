@@ -16,6 +16,7 @@ chapi.APIKey = "[YOUR_COMPANIES_HOUSE_API_KEY]"
 ```
 
 You must provide a valid Companies House API key.
+
 1. (Register a user account with Companies House)[https://developer.companieshouse.gov.uk/developer/signin].
 2. (Follow these instructions)[https://developer.companieshouse.gov.uk/api/docs/index/gettingStarted/apikey_authorisation.html] to get a key.
 3. Either use the key directly in your code, as shown above - or stash it externally in your `.zshrc` (or equivalent)
