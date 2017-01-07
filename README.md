@@ -18,23 +18,24 @@ chapi.APIKey = "your_Companies_House_API_key"
 You must provide a valid Companies House API key.
 
 1. [Register a user account with Companies House](https://developer.companieshouse.gov.uk/developer/signin).
-2. [Follow these instructions](https://developer.companieshouse.gov.uk/api/docs/index/gettingStarted/apikey_authorisation.html) to get a key.
+2. Follow [these instructions](https://developer.companieshouse.gov.uk/api/docs/index/gettingStarted/apikey_authorisation.html) to get a key.
 3. Either use the key directly in your code, as shown above — or stash it externally in your `.zshrc` (or equivalent), for example:
 
 ```bash
 export COMPANIES_HOUSE_API_KEY=your_Companies_House_API_key
 ```
 
-Then use some setup code similar to this to reference the API key from the environment variable:
+Then reference the API key from the environment variable using code similar to this:
 
 ```go
 func init() {
+	// Get the key from the environment variable.
 	apiKey = os.Getenv("COMPANIES_HOUSE_API_KEY")
 	if len(apiKey) == 0 {
 		panic("COMPANIES_HOUSE_API_KEY environment variable not set")
 	}
-	// This will use the same key globally throughout the whole chapi package.
-	// See docs if you wish to set a unique key per client.
+	// Setting chapi.APIKey provides a default key for all clients.
+	// If instead you wish to use a unique key per client, see chapi.NewClientWithKey.
 	chapi.APIKey = apiKey
 }
 ```
@@ -42,6 +43,7 @@ func init() {
 ### Dependencies
 
 - Standard library.
+- [Ginkgo](https://onsi.github.io/ginkgo/) and [Gomega](https://onsi.github.io/gomega/) if you wish to run the tests.
 
 ## Example
 
@@ -57,7 +59,9 @@ GoDocs [https://godoc.org/github.com/jimsmart/chapi](https://godoc.org/github.co
 
 ## Testing
 
-Package chapi currently doesn't include any useful tests or example code - pull requests welcome.
+Package chapi currently doesn't include many useful tests or example code - pull requests welcome.
+
+To run the tests execute `go test` inside the project folder.
 
 ## License
 

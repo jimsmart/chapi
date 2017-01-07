@@ -12,8 +12,6 @@ import (
 	. "github.com/onsi/gomega/gstruct"
 )
 
-const richardBransonID = "fPsul1-gLgzfRlgRvGBL14iNV3c"
-
 var _ = Describe("Client", func() {
 
 	apiKey := os.Getenv("COMPANIES_HOUSE_API_KEY")
@@ -141,9 +139,25 @@ var _ = Describe("Client", func() {
 		// TODO(js) We seem to be missing the ID extractors ...?
 	})
 
+	Context("when calling CompanyProfile()", func() {
+
+		res, err := ch.CompanyProfile("06331310")
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+
+		It("should return the expected result", func() {
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"CompanyName":   Equal("FACEBOOK UK LTD"),
+				"CompanyNumber": Equal("06331310"),
+			}))
+		})
+	})
+
 	Context("when calling OfficerAppointments(), asking for 10 results", func() {
 
-		res, err := ch.OfficerAppointments(richardBransonID, -1, -1)
+		res, err := ch.OfficerAppointments("fPsul1-gLgzfRlgRvGBL14iNV3c", -1, -1)
 
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
@@ -171,7 +185,7 @@ var _ = Describe("Client", func() {
 
 })
 
-func logPrintJSON(v interface{}) {
+func printJSON(v interface{}) {
 	b, _ := json.MarshalIndent(v, "", "   ")
 	log.Println(string(b))
 }
