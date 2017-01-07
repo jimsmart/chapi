@@ -66,7 +66,7 @@ GoDocs [https://godoc.org/github.com/jimsmart/chapi](https://godoc.org/github.co
 
 ## Testing
 
-Package chapi currently doesn't include many useful tests or example code - pull requests welcome.
+Package chapi currently include a partial test suite but no example code - pull requests welcome.
 
 To run the tests execute `go test` inside the project folder.
 
