@@ -910,7 +910,7 @@ type CompanySearchResource struct {
 		DateOfCessation string `json:"date_of_cessation"` // date
 		DateOfCreation  string `json:"date_of_creation"`  // date
 		Description     string
-		DescriptionIDs  []string `json:"description_identifiers"`
+		DescriptionIDs  []string `json:"description_identifier"` // Singular
 		Kind            string
 		Links           struct {
 			Self string
@@ -992,7 +992,7 @@ type DisqualifiedOfficerSearchResource struct {
 		Links          struct {
 			Self string
 		}
-		Matches []struct {
+		Matches struct {
 			AddressSnippet []int `json:"address_snippet"`
 			Snippet        []int
 			Title          []int

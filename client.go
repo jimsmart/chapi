@@ -2,7 +2,6 @@ package chapi
 
 import (
 	"encoding/json"
-	"log"
 
 	"github.com/jimsmart/chapi/ch"
 )
@@ -17,11 +16,17 @@ type Client struct {
 	*RESTClient
 }
 
-// NewClient creats a new instance of Client, configured to use the given API key.
-func NewClient(apiKey string) *Client {
-	if apiKey == "" {
-		log.Println(apiKey)
-	}
+// NewClient creats a new instance of Client.
+//
+// By default, it will obtain its API key from the chapi.APIKey
+// and will use chapi.DefaultHTTPClient.
+func NewClient() *Client {
+	return &Client{RESTClient: &RESTClient{}}
+}
+
+// NewClientWithKey creats a new instance of Client, configured to use the given API key
+// and chapi.DefaultHTTPClient.
+func NewClientWithKey(apiKey string) *Client {
 	return &Client{
 		RESTClient: &RESTClient{
 			APIKey: apiKey,

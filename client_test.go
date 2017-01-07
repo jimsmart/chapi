@@ -1,6 +1,8 @@
 package chapi_test
 
 import (
+	"encoding/json"
+	"log"
 	"os"
 
 	"github.com/jimsmart/chapi"
@@ -19,9 +21,9 @@ var _ = Describe("Client", func() {
 		Expect(apiKey).ToNot(Equal(""))
 	})
 
-	ch := chapi.NewClient(apiKey)
+	Context("a new client with a specified API key", func() {
 
-	Context("a new client", func() {
+		ch := chapi.NewClientWithKey(apiKey)
 
 		It("should have a non-nil RESTClient", func() {
 			Expect(ch.RESTClient).ToNot(BeNil())
@@ -29,41 +31,117 @@ var _ = Describe("Client", func() {
 		It("should have an API key in its RESTClient", func() {
 			Expect(ch.RESTClient.APIKey).ToNot(Equal(""))
 		})
+		It("should be able to Search() without error", func() {
+			_, err := ch.Search("Richard Branson", 1, -1)
+			Expect(err).To(BeNil())
+		})
 	})
 
-	Context("when calling Search()", func() {
+	Context("a new client using the default package-level APIKey", func() {
 
-		res, err := ch.Search("Richard Branson", -1, -1)
+		chapi.APIKey = apiKey
+		ch := chapi.NewClient()
+
+		It("should have a non-nil RESTClient", func() {
+			Expect(ch.RESTClient).ToNot(BeNil())
+		})
+		It("should be able to Search() without error", func() {
+			_, err := ch.Search("Richard Branson", 1, -1)
+			Expect(err).To(BeNil())
+		})
+	})
+
+	ch := chapi.NewClientWithKey(apiKey)
+
+	Context("when calling Search(), asking for 10 results", func() {
+
+		res, err := ch.Search("Richard Branson", 10, -1)
 
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
-
+		It("should return 10 results", func() {
+			Expect(res.ItemsPerPage).To(Equal(10))
+			Expect(res.StartIndex).To(Equal(0))
+		})
 		It("should return an expected result", func() {
 			Expect(res.Items).To(ContainElement(MatchFields(IgnoreExtras, Fields{
 				"Kind":  Equal("searchresults#officer"),
 				"Title": Equal("Sir Richard Charles Nicholas BRANSON"),
 			})))
 		})
-
 		// TODO(js) We seem to be missing the ID extractors ...?
-
-		Context("asking for only 10 results", func() {
-
-			res, err := ch.Search("Richard Branson", 10, -1)
-
-			It("should not return an error", func() {
-				Expect(err).To(BeNil())
-			})
-
-			It("should return a page of 10 results", func() {
-				Expect(res.ItemsPerPage).To(Equal(10))
-				Expect(res.StartIndex).To(Equal(0))
-			})
-		})
 	})
 
-	Context("when calling OfficerAppointments() with Richard Branson's ID", func() {
+	Context("when calling SearchCompanies(), asking for 5 results", func() {
+
+		res, err := ch.SearchCompanies("Facebook UK Ltd", 5, -1)
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return 5 results", func() {
+			Expect(res.ItemsPerPage).To(Equal(5))
+			Expect(res.StartIndex).To(Equal(0))
+		})
+		It("should return an expected result", func() {
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"Kind": Equal("search#companies"),
+				"Items": ContainElement(MatchFields(IgnoreExtras, Fields{
+					"Title":         Equal("FACEBOOK UK LTD"),
+					"CompanyNumber": Equal("06331310"),
+				})),
+			}))
+		})
+		// TODO(js) We seem to be missing the ID extractors ...?
+	})
+
+	Context("when calling SearchOfficers(), asking for 10 results", func() {
+
+		res, err := ch.SearchOfficers("Richard Branson", 10, -1)
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return 10 results", func() {
+			Expect(res.ItemsPerPage).To(Equal(10))
+			Expect(res.StartIndex).To(Equal(0))
+		})
+		It("should return an expected result", func() {
+			Expect(res.Items).To(ContainElement(MatchFields(IgnoreExtras, Fields{
+				"Kind":  Equal("searchresults#officer"),
+				"Title": Equal("Sir Richard Charles Nicholas BRANSON"),
+				"DateOfBirth": MatchAllFields(Fields{
+					"Month": Equal(7),
+					"Year":  Equal(1950),
+				}),
+			})))
+		})
+
+		// TODO(js) We seem to be missing the ID extractors ...?
+	})
+
+	Context("when calling SearchDisqualifiedOfficers(), asking for 10 results", func() {
+
+		res, err := ch.SearchDisqualifiedOfficers("John Smith", 10, -1)
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return 10 results", func() {
+			Expect(res.ItemsPerPage).To(Equal(10))
+			Expect(res.StartIndex).To(Equal(0))
+		})
+		It("should return some results", func() {
+			Expect(res.Items).To(ContainElement(MatchFields(IgnoreExtras, Fields{
+				"Kind": Equal("searchresults#disqualified-officer"),
+			})))
+		})
+
+		// TODO(js) We seem to be missing the ID extractors ...?
+	})
+
+	Context("when calling OfficerAppointments(), asking for 10 results", func() {
 
 		res, err := ch.OfficerAppointments(richardBransonID, -1, -1)
 
@@ -82,27 +160,18 @@ var _ = Describe("Client", func() {
 				"Items": ContainElement(MatchFields(IgnoreExtras, Fields{
 					"Occupation": Equal("Company Director"),
 					"AppointedTo": MatchFields(IgnoreExtras, Fields{
-						"CompanyName": Equal("VIRGIN ATLANTIC LIMITED"),
+						"CompanyName": ContainSubstring("VIRGIN"),
 					}),
 				})),
 			}))
 		})
 
 		// TODO(js) We seem to be missing the ID extractors ...?
-
-		Context("asking for only 10 results", func() {
-
-			res, err := ch.OfficerAppointments(richardBransonID, 10, -1)
-
-			It("should not return an error", func() {
-				Expect(err).To(BeNil())
-			})
-
-			It("should return a page of 10 results", func() {
-				Expect(res.ItemsPerPage).To(Equal(10))
-				Expect(res.StartIndex).To(Equal(0))
-			})
-		})
 	})
 
 })
+
+func logPrintJSON(v interface{}) {
+	b, _ := json.MarshalIndent(v, "", "   ")
+	log.Println(string(b))
+}
