@@ -66,6 +66,9 @@ var _ = Describe("Client", func() {
 			Expect(res.Items).To(ContainElement(MatchFields(IgnoreExtras, Fields{
 				"Kind":  Equal("searchresults#officer"),
 				"Title": Equal("Sir Richard Charles Nicholas BRANSON"),
+				"Links": MatchAllFields(Fields{
+					"Self": Not(Equal("")),
+				}),
 			})))
 		})
 		// TODO(js) We seem to be missing the ID extractors ...?
@@ -88,6 +91,9 @@ var _ = Describe("Client", func() {
 				"Items": ContainElement(MatchFields(IgnoreExtras, Fields{
 					"Title":         Equal("FACEBOOK UK LTD"),
 					"CompanyNumber": Equal("06331310"),
+					"Links": MatchAllFields(Fields{
+						"Self": Not(Equal("")),
+					}),
 				})),
 			}))
 		})
@@ -112,6 +118,9 @@ var _ = Describe("Client", func() {
 				"DateOfBirth": MatchAllFields(Fields{
 					"Month": Equal(7),
 					"Year":  Equal(1950),
+				}),
+				"Links": MatchAllFields(Fields{
+					"Self": Not(Equal("")),
 				}),
 			})))
 		})
@@ -146,12 +155,94 @@ var _ = Describe("Client", func() {
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
-
 		It("should return the expected result", func() {
 			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
 				"CompanyName":   Equal("FACEBOOK UK LTD"),
 				"CompanyNumber": Equal("06331310"),
+				"Links": MatchFields(IgnoreExtras, Fields{
+					"Self":          Not(Equal("")),
+					"FilingHistory": Not(Equal("")),
+					"Officers":      Not(Equal("")),
+				}),
 			}))
+		})
+	})
+
+	Context("when calling CompanyRegisteredOfficeAddress()", func() {
+
+		res, err := ch.CompanyRegisteredOfficeAddress("06331310")
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return the expected result", func() {
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"AddressLine1": Equal("10 Brock Street"),
+				"AddressLine2": Equal("Regent's Place"),
+				"Locality":     Equal("London"),
+				"PostalCode":   Equal("NW1 3FG"),
+				"Country":      Equal("England"),
+			}))
+		})
+	})
+
+	Context("when calling CompanyOfficers()", func() {
+
+		res, err := ch.CompanyOfficers("02627406", "", "", -1, -1)
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return the expected result", func() {
+
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"Links": MatchAllFields(Fields{
+					"Self": Not(Equal("")),
+				}),
+				"Items": ContainElement(MatchFields(IgnoreExtras, Fields{
+					"Name": Equal("DYSON, James, Sir"),
+					"DateOfBirth": MatchFields(IgnoreExtras, Fields{
+						"Month": Equal(5),
+						"Year":  Equal(1947),
+					}),
+					"Nationality": Equal("British"),
+					"Occupation":  Equal("Designer"),
+					"OfficerRole": Equal("director"),
+					"ResignedOn":  Equal("2010-06-18"),
+					"Links": MatchAllFields(Fields{
+						"Officer": MatchAllFields(Fields{
+							"Appointments": Not(Equal("")),
+						}),
+					}),
+				})),
+			}))
+		})
+	})
+
+	Context("when calling CompanyFilingHistory(), asking for 10 results", func() {
+
+		res, err := ch.CompanyFilingHistory("02627406", "", 10, -1)
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return 10 results", func() {
+			Expect(res.ItemsPerPage).To(Equal(10))
+			Expect(res.StartIndex).To(Equal(0))
+		})
+		It("should return the expected result", func() {
+			Expect(res.Items).To(ContainElement(MatchFields(IgnoreExtras, Fields{
+				"Type":          Equal("AA"),
+				"Category":      Equal("accounts"),
+				"Description":   Equal("accounts-with-accounts-type-full"),
+				"PaperFiled":    Equal(true),
+				"Date":          Not(Equal("")),
+				"TransactionID": Not(Equal("")),
+				"Links": MatchAllFields(Fields{
+					"Self":             Not(Equal("")),
+					"DocumentMetadata": Not(Equal("")),
+				}),
+			})))
 		})
 	})
 

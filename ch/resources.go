@@ -136,9 +136,10 @@ type RegisteredOfficeAddressResource struct {
 }
 
 type OfficerListResource struct {
-	ActiveCount int `json:"active_count"`
-	ETag        string
-	Items       []struct {
+	ActiveCount   int `json:"active_count"`
+	ETag          string
+	InactiveCount int `json:"inactive_count"`
+	Items         []struct {
 		Address struct {
 			AddressLine1 string `json:"address_line_1"`
 			AddressLine2 string `json:"address_line_2"`
@@ -196,7 +197,7 @@ type FilingHistoryListResource struct {
 	ItemsPerPage        int `json:"items_per_page"`
 	Kind                string
 	StartIndex          int `json:"start_index"`
-	TotalResults        int `json:"total_results"`
+	TotalCount          int `json:"total_count"`
 }
 
 type FilingHistoryItemResource struct {
