@@ -8,7 +8,7 @@ import (
 
 // TODO(js) Look into decoding/unmarshalling streaming JSON ?
 
-// Client provides higher-level access to the Companies House API,
+// Client provides higher-level API to access to the Companies House API,
 // with all methods returning unmarshalled JSON structs.
 //
 // To work with this same API but with raw JSON bytes, see RESTClient.

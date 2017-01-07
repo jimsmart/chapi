@@ -9,7 +9,7 @@ This API consists of:
 - `Client` — higher-level API, with all methods returning structs.
 - `RestClient` — lower-level API, all methods return raw JSON bytes.
 
-Because the Companies House API is rate-limited, it may be preferable to use the `RestClient` and persist the returned data for later use. Resource structs to unmarshal the JSON data into are in the ch subpackage.
+Because the Companies House API is rate-limited, it may be preferable to use the `RestClient` and persist the returned data for later use. Resource structs to unmarshal the JSON into can be found in the subpackage ch.
 
 ## Installation
 ```bash
