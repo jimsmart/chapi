@@ -18,14 +18,14 @@ type Client struct {
 
 // NewClient creats a new instance of Client.
 //
-// By default, it will obtain its API key from the chapi.APIKey
-// and will use chapi.DefaultHTTPClient.
+// By default, it will use the API key provided by the APIKey package variable
+// and the HTTPClient provided by the DefaultHTTPClient package variable.
 func NewClient() *Client {
 	return &Client{RESTClient: &RESTClient{}}
 }
 
 // NewClientWithKey creats a new instance of Client, configured to use the given API key
-// and chapi.DefaultHTTPClient.
+// and the HTTPClient provided by the DefaultHTTPClient package variable.
 func NewClientWithKey(apiKey string) *Client {
 	return &Client{
 		RESTClient: &RESTClient{

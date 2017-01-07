@@ -24,9 +24,14 @@ chapi.APIKey = "your_Companies_House_API_key"
 
 You must provide a valid Companies House API key.
 
+### Get an API key
+
 1. [Register a user account with Companies House](https://developer.companieshouse.gov.uk/developer/signin).
 2. Follow [these instructions](https://developer.companieshouse.gov.uk/api/docs/index/gettingStarted/apikey_authorisation.html) to get a key.
-3. Either use the key directly in your code, as shown above — or keep it from inside your code by stashing it externally in your `.zshrc` (or equivalent), for example:
+
+#### Keeping your key secret
+
+Either use the key directly in your code, as shown above — or, preferably, keep it outside your code by stashing it externally in your `.zshrc` (or equivalent), for example:
 
 ```bash
 export COMPANIES_HOUSE_API_KEY=your_Companies_House_API_key
@@ -66,7 +71,7 @@ GoDocs [https://godoc.org/github.com/jimsmart/chapi](https://godoc.org/github.co
 
 ## Testing
 
-Package chapi currently include a partial test suite but no example code - pull requests welcome.
+Package chapi includes a partial test suite but no example code at present - pull requests welcome.
 
 To run the tests execute `go test` inside the project folder.
 
