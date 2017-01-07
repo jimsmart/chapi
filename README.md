@@ -4,6 +4,13 @@
 
 Package chapi is a [Go](https://golang.org) package providing clients and data structures for working with the [Companies House API](https://developer.companieshouse.gov.uk/api/docs/).
 
+This API consists of:
+
+- `Client` — higher-level API, with all methods returning structs.
+- `RestClient` — lower-level API, all methods return raw JSON bytes.
+
+Because the Companies House API is rate-limited, it may be preferable to use the `RestClient` and persist the returned data for later use. Resource structs to unmarshal the JSON data into are in the ch subpackage.
+
 ## Installation
 ```bash
 $ go get github.com/jimsmart/chapi
@@ -19,13 +26,13 @@ You must provide a valid Companies House API key.
 
 1. [Register a user account with Companies House](https://developer.companieshouse.gov.uk/developer/signin).
 2. Follow [these instructions](https://developer.companieshouse.gov.uk/api/docs/index/gettingStarted/apikey_authorisation.html) to get a key.
-3. Either use the key directly in your code, as shown above — or stash it externally in your `.zshrc` (or equivalent), for example:
+3. Either use the key directly in your code, as shown above — or keep it from inside your code by stashing it externally in your `.zshrc` (or equivalent), for example:
 
 ```bash
 export COMPANIES_HOUSE_API_KEY=your_Companies_House_API_key
 ```
 
-Then reference the API key from the environment variable using code similar to this:
+Then get the API key from the environment variable, using code similar to this:
 
 ```go
 func init() {
