@@ -223,8 +223,6 @@ var _ = Describe("Client", func() {
 
 		res, err := ch.CompanyFilingHistory("02627406", "", 10, -1)
 
-		printJSON(res)
-
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
@@ -250,24 +248,102 @@ var _ = Describe("Client", func() {
 
 	Context("when calling CompanyFilingHistoryTransaction()", func() {
 
-		res, err := ch.CompanyFilingHistoryTransaction("02627406", "")
+		res, err := ch.CompanyFilingHistoryTransaction("02627406", "MzA4MTM5MTMwMWFkaXF6a2N4")
 
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
+
+		// printJSON(res)
+
 		It("should return the expected result", func() {
-			Expect(res.Items).To(ContainElement(MatchFields(IgnoreExtras, Fields{
-				"Type":          Equal("AA"),
-				"Category":      Equal("accounts"),
-				"Description":   Equal("accounts-with-accounts-type-full"),
-				"PaperFiled":    Equal(true),
-				"Date":          Not(Equal("")),
-				"TransactionID": Not(Equal("")),
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"Type":        Equal("AR01"),
+				"Category":    Equal("annual-return"),
+				"Description": Equal("annual-return-company-with-made-up-date-full-list-shareholders"),
+				"Date":        Not(Equal("")),
+				"AssociatedFilings": ContainElement(MatchFields(IgnoreExtras, Fields{
+					"Date":        Not(Equal("")),
+					"Description": Not(Equal("")),
+					"Type":        Not(Equal("")),
+				})),
 				"Links": MatchAllFields(Fields{
 					"Self":             Not(Equal("")),
 					"DocumentMetadata": Not(Equal("")),
 				}),
-			})))
+			}))
+		})
+	})
+
+	Context("when calling CompanyInsolvency()", func() {
+
+		// TODO(js) I am unable to find a Company Number for a company that has insolvency cases.
+
+		_, err := ch.CompanyInsolvency("NF001705")
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+
+		// It("should return the expected result", func() {
+		// 	Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+		// 		//
+		// 	}))
+		// })
+	})
+
+	Context("when calling CompanyCharges()", func() {
+
+		res, err := ch.CompanyCharges("NF001705", -1, -1)
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return an expected result", func() {
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"TotalCount":      Equal(2),
+				"UnfilteredCount": Equal(2),
+				"Items": ContainElement(MatchFields(IgnoreExtras, Fields{
+					"CreatedOn":   Not(Equal("")),
+					"DeliveredOn": Not(Equal("")),
+					"PersonsEntitled": ContainElement(MatchAllFields(Fields{
+						"Name": Equal("Barclays Bank PLC"),
+					})),
+					"Classification": MatchAllFields(Fields{
+						"Description": Not(Equal("")),
+						"Type":        Not(Equal("")),
+					}),
+					"Links": MatchAllFields(Fields{
+						"Self": Not(Equal("")),
+					}),
+				})),
+			}))
+		})
+	})
+
+	Context("when calling CompanyCharge()", func() {
+
+		res, err := ch.CompanyCharge("NF001705", "eZSEl_fk_3LqlhAHRHEFH69egpE")
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+
+		It("should return an expected result", func() {
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"CreatedOn":   Not(Equal("")),
+				"DeliveredOn": Not(Equal("")),
+				"PersonsEntitled": ContainElement(MatchAllFields(Fields{
+					"Name": Equal("Barclays Bank PLC"),
+				})),
+				"Classification": MatchAllFields(Fields{
+					"Description": Not(Equal("")),
+					"Type":        Not(Equal("")),
+				}),
+				"Links": MatchAllFields(Fields{
+					"Self": Not(Equal("")),
+				}),
+			}))
 		})
 	})
 

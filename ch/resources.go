@@ -266,7 +266,7 @@ type ChargeListResource struct {
 	PartSatisfiedCount int `json:"part_satisfied_count"`
 	SatisfiedCount     int `json:"satisfied_count"`
 	TotalCount         int `json:"total_count"`
-	UnfilteredCount    int `json:"unfiletered_count"` // TODO(js) Note typo in field name 'unfiletered' - see CH docs.
+	UnfilteredCount    int `json:"unfiltered_count"`
 }
 
 type ChargeDetailsResource struct {
@@ -294,7 +294,7 @@ type ChargeDetailsResource struct {
 		Self string
 	}
 	MoreThanFourPersonsEntitled bool `json:"more_than_four_persons_entitled"`
-	Particulars                 []struct {
+	Particulars                 struct {
 		ChargorActingAsBareTrustee bool `json:"chargor_acting_as_bare_trustee"`
 		ContainsFixedCharge        bool `json:"contains_fixed_charge"`
 		ContainsFloatingCharge     bool `json:"contains_floating_charge"`
