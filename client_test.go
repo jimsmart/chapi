@@ -223,12 +223,37 @@ var _ = Describe("Client", func() {
 
 		res, err := ch.CompanyFilingHistory("02627406", "", 10, -1)
 
+		printJSON(res)
+
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
 		It("should return 10 results", func() {
 			Expect(res.ItemsPerPage).To(Equal(10))
 			Expect(res.StartIndex).To(Equal(0))
+		})
+		It("should return the expected result", func() {
+			Expect(res.Items).To(ContainElement(MatchFields(IgnoreExtras, Fields{
+				"Type":          Equal("AA"),
+				"Category":      Equal("accounts"),
+				"Description":   Equal("accounts-with-accounts-type-full"),
+				"PaperFiled":    Equal(true),
+				"Date":          Not(Equal("")),
+				"TransactionID": Not(Equal("")),
+				"Links": MatchAllFields(Fields{
+					"Self":             Not(Equal("")),
+					"DocumentMetadata": Not(Equal("")),
+				}),
+			})))
+		})
+	})
+
+	Context("when calling CompanyFilingHistoryTransaction()", func() {
+
+		res, err := ch.CompanyFilingHistoryTransaction("02627406", "")
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
 		})
 		It("should return the expected result", func() {
 			Expect(res.Items).To(ContainElement(MatchFields(IgnoreExtras, Fields{
