@@ -253,9 +253,6 @@ var _ = Describe("Client", func() {
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
-
-		// printJSON(res)
-
 		It("should return the expected result", func() {
 			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
 				"Type":        Equal("AR01"),
@@ -284,7 +281,6 @@ var _ = Describe("Client", func() {
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
-
 		// It("should return the expected result", func() {
 		// 	Expect(*res).To(MatchFields(IgnoreExtras, Fields{
 		// 		//
@@ -328,7 +324,6 @@ var _ = Describe("Client", func() {
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
-
 		It("should return an expected result", func() {
 			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
 				"CreatedOn":   Not(Equal("")),
@@ -354,7 +349,6 @@ var _ = Describe("Client", func() {
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
-
 		It("should return an expected result", func() {
 			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
 				"Kind": Equal("personal-appointment"),
@@ -373,6 +367,95 @@ var _ = Describe("Client", func() {
 		})
 
 		// TODO(js) We seem to be missing the ID extractors ...?
+	})
+
+	//
+
+	// TODO(js) This test returns 404 - Is that simply because Branson has no disqualifications? Look into this - maybe ask CH for some test data?
+
+	// Context("when calling OfficerNaturalDisqualifications()", func() {
+
+	// 	res, err := ch.OfficerNaturalDisqualifications("fPsul1-gLgzfRlgRvGBL14iNV3c")
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+
+	// 	printJSON(res)
+
+	// 	// It("should return an expected result", func() {
+	// 	// 	Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 	// 	// ...
+	// 	// 	}))
+	// 	// })
+	// })
+
+	// -- Same problem as above :(
+
+	// Context("when calling OfficerCorporateDisqualifications()", func() {
+
+	// 	res, err := ch.OfficerCorporateDisqualifications("fPsul1-gLgzfRlgRvGBL14iNV3c")
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+
+	// 	printJSON(res)
+
+	// 	// It("should return an expected result", func() {
+	// 	// 	Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 	// 	// ...
+	// 	// 	}))
+	// 	// })
+	// })
+
+	Context("when calling CompanyUKEstablishments()", func() {
+
+		res, err := ch.CompanyUKEstablishments("02627406")
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return an expected result", func() {
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				// "Ttems":
+				"Kind": Equal("related-companies"),
+				"Links": MatchAllFields(Fields{
+					"Self": Not(Equal("")),
+				}),
+			}))
+		})
+	})
+
+	Context("when calling PSCs()", func() {
+
+		res, err := ch.PSCs("02627406", false, -1, -1)
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return an expected result", func() {
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"TotalResults": Not(Equal(0)),
+				// "Kind": Not(Equal("")),
+				"Links": MatchFields(IgnoreExtras, Fields{
+					"Self": Not(Equal("")),
+				}),
+				"Items": ContainElement(MatchFields(IgnoreExtras, Fields{
+					"Name": Equal("Dyson James Limited"),
+					"Address": MatchFields(IgnoreExtras, Fields{
+						"AddressLine1": Not(Equal("")),
+						"Locality":     Not(Equal("")),
+						"PostalCode":   Not(Equal("")),
+						"Country":      Equal("England"),
+					}),
+					"NaturesOfControl": ContainElement("ownership-of-shares-75-to-100-percent"),
+					"Links": MatchFields(IgnoreExtras, Fields{
+						"Self": Not(Equal("")),
+					}),
+				})),
+			}))
+		})
 	})
 
 })

@@ -31,7 +31,7 @@ You must provide a valid Companies House API key.
 
 #### Keeping your key secret
 
-Either use the key directly in your code, as shown above — or, preferably, keep it outside your code by stashing it externally in your `.zshrc` (or equivalent), for example:
+Either use the key directly in your code, as shown above — or, preferably, keep it outside your code by stashing it externally in your `.zshrc` (or equivalent). For example:
 
 ```bash
 export COMPANIES_HOUSE_API_KEY=your_Companies_House_API_key
