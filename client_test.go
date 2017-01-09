@@ -458,6 +458,85 @@ var _ = Describe("Client", func() {
 		})
 	})
 
+	// TODO(js) Need to find a PSC individual.
+
+	// Context("when calling PSCIndividual()", func() {
+
+	// 	res, err := ch.PSCIndividual("02627406", "")
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+	// 	It("should return an expected result", func() {
+	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 		}))
+	// 	})
+	// })
+
+	Context("when calling PSCCorporateEntity()", func() {
+
+		res, err := ch.PSCCorporateEntity("02627406", "fxqbqgRvv3y8SuMWArNKkfezAAw")
+
+		It("should not return an error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("should return an expected result", func() {
+			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+				"Address": MatchFields(IgnoreExtras, Fields{
+					"AddressLine1": Not(Equal("")),
+					"Locality":     Not(Equal("")),
+					"PostalCode":   Not(Equal("")),
+					"Country":      Equal("England"),
+				}),
+				"Identification": MatchFields(IgnoreExtras, Fields{
+					"CountryRegistered":  Not(Equal("")),
+					"LegalAuthority":     Not(Equal("")),
+					"LegalForm":          Not(Equal("")),
+					"PlaceRegistered":    Not(Equal("")),
+					"RegistrationNumber": Not(Equal("")),
+				}),
+				"Kind": Equal("corporate-entity-person-with-significant-control"),
+				"Links": MatchFields(IgnoreExtras, Fields{
+					"Self": Not(Equal("")),
+				}),
+				"Name":             Equal("Dyson James Limited"),
+				"NaturesOfControl": Not(BeEmpty()),
+			}))
+		})
+	})
+
+	// TODO(js) Need to find a PSC legal person.
+
+	// Context("when calling PSCLegalPerson()", func() {
+
+	// 	res, err := ch.PSCLegalPerson("02627406", "")
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+	// 	It("should return an expected result", func() {
+	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 		}))
+	// 	})
+	// })
+
+	// TODO(js) This also gives 404 :(
+
+	// Context("when calling PSCStatements()", func() {
+
+	// 	res, err := ch.PSCStatements("02627406", false, -1, -1)
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+	// 	printJSON(res)
+	// 	It("should return an expected result", func() {
+	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 		//
+	// 		}))
+	// 	})
+	// })
+
 })
 
 func printJSON(v interface{}) {
