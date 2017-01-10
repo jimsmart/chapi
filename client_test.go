@@ -344,8 +344,6 @@ var _ = Describe("Client", func() {
 
 	Context("when calling OfficerAppointments(), asking for 10 results", func() {
 
-		ff
-
 		res, err := ch.OfficerAppointments("fPsul1-gLgzfRlgRvGBL14iNV3c", -1, -1)
 
 		It("should not return an error", func() {
