@@ -344,11 +344,14 @@ var _ = Describe("Client", func() {
 
 	Context("when calling OfficerAppointments(), asking for 10 results", func() {
 
+		ff
+
 		res, err := ch.OfficerAppointments("fPsul1-gLgzfRlgRvGBL14iNV3c", -1, -1)
 
 		It("should not return an error", func() {
 			Expect(err).To(BeNil())
 		})
+		printJSON(res)
 		It("should return an expected result", func() {
 			Expect(*res).To(MatchFields(IgnoreExtras, Fields{
 				"Kind": Equal("personal-appointment"),
@@ -514,6 +517,7 @@ var _ = Describe("Client", func() {
 	// 	It("should not return an error", func() {
 	// 		Expect(err).To(BeNil())
 	// 	})
+	// 	printJSON(res)
 	// 	It("should return an expected result", func() {
 	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
 	// 		}))
@@ -525,6 +529,91 @@ var _ = Describe("Client", func() {
 	// Context("when calling PSCStatements()", func() {
 
 	// 	res, err := ch.PSCStatements("02627406", false, -1, -1)
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+	// 	printJSON(res)
+	// 	It("should return an expected result", func() {
+	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 		//
+	// 		}))
+	// 	})
+	// })
+
+	// TODO(js) This one relies on an id from the previous query :/
+
+	// Context("when calling PSCStatement()", func() {
+
+	// 	res, err := ch.PSCStatement("02627406", "foo")
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+	// 	printJSON(res)
+	// 	It("should return an expected result", func() {
+	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 		//
+	// 		}))
+	// 	})
+	// })
+
+	// TODO(js) This one relies on a superSecureID - I suspect they're hard to get?
+
+	// Context("when calling PSCStatement()", func() {
+
+	// 	res, err := ch.PSCSuperSecure("02627406", "foo")
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+	// 	printJSON(res)
+	// 	It("should return an expected result", func() {
+	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 		//
+	// 		}))
+	// 	})
+	// })
+
+	// TODO(js) 404
+
+	// Context("when calling CompanyRegisters()", func() {
+
+	// 	res, err := ch.CompanyRegisters("NF001705")
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+	// 	printJSON(res)
+	// 	It("should return an expected result", func() {
+	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 		//
+	// 		}))
+	// 	})
+	// })
+
+	// TODO(js) 404
+
+	// Context("when calling CompanyExemptions()", func() {
+
+	// 	res, err := ch.CompanyExemptions("02627406")
+
+	// 	It("should not return an error", func() {
+	// 		Expect(err).To(BeNil())
+	// 	})
+	// 	printJSON(res)
+	// 	It("should return an expected result", func() {
+	// 		Expect(*res).To(MatchFields(IgnoreExtras, Fields{
+	// 		//
+	// 		}))
+	// 	})
+	// })
+
+	// TODO(js) 404 - although it simply times-out from the webpage :(
+
+	// Context("when calling DocumentMetadata()", func() {
+
+	// 	res, err := ch.DocumentMetadata("ged7Kn26fOPGwTr0MACEDypCDiWP8wq2-eNSO1vblk0")
 
 	// 	It("should not return an error", func() {
 	// 		Expect(err).To(BeNil())
