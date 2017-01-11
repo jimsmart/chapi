@@ -720,6 +720,7 @@ var _ = Describe("Client", func() {
 func shouldError(err error) {
 	It("should return an error", func() {
 		Expect(err).ToNot(BeNil())
+		Expect(err.Error()).ToNot(Equal(""))
 	})
 }
 
