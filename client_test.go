@@ -507,10 +507,8 @@ var _ = Describe("Client", func() {
 				}))
 			})
 		})
-		// TODO(js) Inconsistent - does not return populated ErrorResource.
 		Context("with an invalid company number", func() {
 			_, err := ch.CompanyUKEstablishments("foo")
-			// shouldError(err)
 			shouldError404(err, "company-profile-not-found")
 		})
 	})
@@ -545,6 +543,10 @@ var _ = Describe("Client", func() {
 					})),
 				}))
 			})
+		})
+		Context("with an invalid company number", func() {
+			_, err := ch.PSCs("foo", false, -1, -1)
+			shouldError404(err, "company-psc-not-found")
 		})
 	})
 
@@ -594,6 +596,10 @@ var _ = Describe("Client", func() {
 					"NaturesOfControl": Not(BeEmpty()),
 				}))
 			})
+		})
+		Context("with an invalid company number and corporate entity id", func() {
+			_, err := ch.PSCCorporateEntity("foo", "bar")
+			shouldError404(err, "company-psc-details-not-found")
 		})
 	})
 
