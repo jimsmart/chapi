@@ -193,20 +193,8 @@ var _ = Describe("Client", func() {
 		})
 
 		Context("with an invalid company number", func() {
-
 			_, err := ch.CompanyProfile("foo")
-
-			It("should return an error containing a valid ErrorResource", func() {
-				Expect(err).ToNot(BeNil())
-				e := err.(*chapi.RESTStatusError)
-				Expect(e.StatusCode).To(Equal(404))
-				Expect(e.Status).To(ContainSubstring("404"))
-				Expect(*e.ErrorResource).To(MatchFields(IgnoreExtras, Fields{
-					"Errors": ContainElement(MatchFields(IgnoreExtras, Fields{
-						"Error": Equal("company-profile-not-found"),
-					})),
-				}))
-			})
+			shouldError404(err, "company-profile-not-found")
 		})
 	})
 
@@ -227,6 +215,10 @@ var _ = Describe("Client", func() {
 					"Country":      Equal("England"),
 				}))
 			})
+		})
+		Context("with an invalid company number", func() {
+			_, err := ch.CompanyRegisteredOfficeAddress("foo")
+			shouldError404(err, "registered-office-address-not-found")
 		})
 	})
 
@@ -263,6 +255,10 @@ var _ = Describe("Client", func() {
 				}))
 			})
 		})
+		Context("with an invalid company number", func() {
+			_, err := ch.CompanyOfficers("foo", "", "", -1, -1)
+			shouldError404(err, "")
+		})
 	})
 
 	Describe("CompanyFilingHistory()", func() {
@@ -292,6 +288,12 @@ var _ = Describe("Client", func() {
 				})))
 			})
 		})
+		// TODO(js) Inconsistent behaviour - this doesn't seem to produce an error.
+		// Context("with an invalid company number", func() {
+		// 	_, err := ch.CompanyFilingHistory("foo", "", -1, -1)
+		// 	shouldError(err)
+		// 	shouldError404(err, "foo")
+		// })
 	})
 
 	Describe("CompanyFilingHistoryTransaction()", func() {
@@ -319,6 +321,10 @@ var _ = Describe("Client", func() {
 					}),
 				}))
 			})
+		})
+		Context("with an invalid company number", func() {
+			_, err := ch.CompanyFilingHistoryTransaction("foo", "bar")
+			shouldError404(err, "filing-history-item-not-found")
 		})
 	})
 
@@ -369,6 +375,12 @@ var _ = Describe("Client", func() {
 				}))
 			})
 		})
+		// TODO(js) Inconsistent - doesn't return populated ErrorResource.
+		Context("with an invalid company number", func() {
+			_, err := ch.CompanyCharges("foo", -1, -1)
+			shouldError(err)
+			// shouldError404(err, "foo")
+		})
 	})
 
 	Describe("CompanyCharge()", func() {
@@ -396,12 +408,16 @@ var _ = Describe("Client", func() {
 				}))
 			})
 		})
+		Context("with an invalid company number and charge id", func() {
+			_, err := ch.CompanyCharge("foo", "bar")
+			shouldError404(err, "company-mortgages-not-found")
+		})
 	})
 
 	Describe("OfficerAppointments()", func() {
 		Context("with a valid officer id, asking for 10 results", func() {
 
-			res, err := ch.OfficerAppointments("fPsul1-gLgzfRlgRvGBL14iNV3c", -1, -1)
+			res, err := ch.OfficerAppointments("fPsul1-gLgzfRlgRvGBL14iNV3c", 10, -1)
 
 			It("should not return an error", func() {
 				Expect(err).To(BeNil())
@@ -424,6 +440,12 @@ var _ = Describe("Client", func() {
 			})
 
 			// TODO(js) We seem to be missing the ID extractors ...?
+		})
+		// TODO(js) Inconsistent - does not return populated ErrorResource.
+		Context("with an invalid officer id", func() {
+			_, err := ch.OfficerAppointments("foo", -1, -1)
+			shouldError(err)
+			// shouldError404(err, "foo")
 		})
 	})
 
@@ -484,6 +506,12 @@ var _ = Describe("Client", func() {
 					}),
 				}))
 			})
+		})
+		// TODO(js) Inconsistent - does not return populated ErrorResource.
+		Context("with an invalid company number", func() {
+			_, err := ch.CompanyUKEstablishments("foo")
+			// shouldError(err)
+			shouldError404(err, "company-profile-not-found")
 		})
 	})
 
@@ -688,6 +716,29 @@ var _ = Describe("Client", func() {
 	// })
 
 })
+
+func shouldError(err error) {
+	It("should return an error", func() {
+		Expect(err).ToNot(BeNil())
+	})
+}
+
+func shouldError404(err error, msg string) {
+	shouldError(err)
+	It("should return a 404 and a valid ErrorResource", func() {
+		Expect(err).ToNot(BeNil())
+		e := err.(*chapi.RESTStatusError)
+		Expect(e.StatusCode).To(Equal(404))
+		Expect(e.Status).To(ContainSubstring("404"))
+		if msg != "" {
+			Expect(*e.ErrorResource).To(MatchFields(IgnoreExtras, Fields{
+				"Errors": ContainElement(MatchFields(IgnoreExtras, Fields{
+					"Error": Equal(msg),
+				})),
+			}))
+		}
+	})
+}
 
 func printJSON(v interface{}) {
 	b, _ := json.MarshalIndent(v, "", "   ")
