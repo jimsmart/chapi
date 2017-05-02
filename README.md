@@ -42,7 +42,7 @@ Then get the API key from the environment variable, using code similar to this:
 ```go
 func init() {
 	// Get the key from the environment variable.
-	apiKey = os.Getenv("COMPANIES_HOUSE_API_KEY")
+	apiKey := os.Getenv("COMPANIES_HOUSE_API_KEY")
 	if len(apiKey) == 0 {
 		panic("COMPANIES_HOUSE_API_KEY environment variable not set")
 	}
@@ -62,7 +62,16 @@ func init() {
 ```go
 import "github.com/jimsmart/chapi"
 
-// TODO
+chapi.APIKey = "your_Companies_House_API_key"
+
+func main() {
+	ch := chapi.NewClient()
+	res, err := ch.Search("Richard Branson", 1, -1)
+	if err != nil {
+		panic(err)
+	}
+	// TODO do something with results
+}
 ```
 
 ## Documentation
