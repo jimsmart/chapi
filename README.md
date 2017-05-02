@@ -1,6 +1,6 @@
 # chapi
 
-[![MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.md) [![Build Status](https://img.shields.io/travis/jimsmart/chapi/master.svg?style=flat)](https://travis-ci.org/jimsmart/chapi) [![codecov](https://codecov.io/gh/jimsmart/chapi/branch/master/graph/badge.svg)](https://codecov.io/gh/jimsmart/chapi) [![Godoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/jimsmart/chapi)
+[![MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.md) [![Build Status](https://img.shields.io/travis/jimsmart/chapi/master.svg?style=flat)](https://travis-ci.org/jimsmart/chapi) [![codecov](https://codecov.io/gh/jimsmart/chapi/branch/master/graph/badge.svg)](https://codecov.io/gh/jimsmart/chapi) [![Go Report Card](https://goreportcard.com/badge/github.com/jimsmart/chapi)](https://goreportcard.com/report/github.com/jimsmart/chapi) [![Godoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/jimsmart/chapi)
 
 chapi is a [Go](https://golang.org) package providing clients and data structures for working with the [Companies House API](https://developer.companieshouse.gov.uk/api/docs/).
 
