@@ -37,7 +37,7 @@ type RESTClient struct {
 // RESTStatusError is returned as an error value if the http.Response
 // has a StatusCode that is not 2xx or 3xx.
 //
-// If possible, any content found in the reponse body is unmarshalled into ErrorResource.
+// If possible, any content found in the response body is unmarshalled into ErrorResource.
 type RESTStatusError struct {
 	Status        string
 	StatusCode    int
