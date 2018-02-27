@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -56,16 +57,23 @@ func (e *RESTStatusError) Error() string {
 // newRestStatusError creates a new instance of RESTStatusError,
 // and attempts to unmarshall the body into an ErrorResource.
 func newRESTStatusError(status string, statusCode int, body []byte) *RESTStatusError {
-	err := &RESTStatusError{
+	rerr := &RESTStatusError{
 		Status:     status,
 		StatusCode: statusCode,
 		Body:       body,
 	}
-	var r ch.ErrorResource
-	if json.Unmarshal(body, &r) == nil {
-		err.ErrorResource = &r
+	if len(body) == 0 {
+		return rerr
 	}
-	return err
+	var r ch.ErrorResource
+	err := json.Unmarshal(body, &r)
+	if err != nil {
+		log.Printf("json.Unmarshal error %s for %s", err, body)
+		// panic(err)
+		return rerr
+	}
+	rerr.ErrorResource = &r
+	return rerr
 }
 
 //

@@ -12,7 +12,7 @@ type ErrorResource struct {
 		Location     string
 		LocationType string
 		Type         string
-	}
+	} `json:"errors"`
 }
 
 type CompanyProfileResource struct {

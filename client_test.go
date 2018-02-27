@@ -218,7 +218,9 @@ var _ = Describe("Client", func() {
 		})
 		Context("with an invalid company number", func() {
 			_, err := ch.CompanyRegisteredOfficeAddress("foo")
-			shouldError404(err, "registered-office-address-not-found")
+			// TODO(js) This used to return an error message.
+			// shouldError404(err, "registered-office-address-not-found")
+			shouldError404(err, "")
 		})
 	})
 
@@ -734,10 +736,13 @@ func shouldError404(err error, msg string) {
 	shouldError(err)
 	It("should return a 404 and a valid ErrorResource", func() {
 		Expect(err).ToNot(BeNil())
-		e := err.(*chapi.RESTStatusError)
+		e, ok := err.(*chapi.RESTStatusError)
+		Expect(ok).To(BeTrue())
 		Expect(e.StatusCode).To(Equal(404))
 		Expect(e.Status).To(ContainSubstring("404"))
 		if msg != "" {
+			// log.Printf("%s %v", msg, e.ErrorResource)
+			Expect(e.ErrorResource).ToNot(BeNil())
 			Expect(*e.ErrorResource).To(MatchFields(IgnoreExtras, Fields{
 				"Errors": ContainElement(MatchFields(IgnoreExtras, Fields{
 					"Error": Equal(msg),
