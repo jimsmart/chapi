@@ -66,7 +66,7 @@ var _ = Describe("Client", func() {
 
 	ch := chapi.NewClientWithKey(apiKey)
 
-	Describe("Search()", func() {
+	XDescribe("Search()", func() {
 		Context("asking for 10 results", func() {
 
 			res, err := ch.Search("Richard Branson", 10, -1)
