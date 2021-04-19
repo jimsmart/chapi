@@ -1,7 +1,7 @@
 # chapi
 
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/jimsmart/chapi/master.svg?style=flat)](https://travis-ci.org/jimsmart/chapi)
+[![Build Status](https://github.com/jimsmart/chapi/actions/workflows/main.yml/badge.svg)](https://github.com/jimsmart/chapi/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/jimsmart/chapi/branch/master/graph/badge.svg)](https://codecov.io/gh/jimsmart/chapi)
 [![Go Report Card](https://goreportcard.com/badge/github.com/jimsmart/chapi)](https://goreportcard.com/report/github.com/jimsmart/chapi)
 [![Used By](https://img.shields.io/sourcegraph/rrc/github.com/jimsmart/chapi.svg)](https://sourcegraph.com/github.com/jimsmart/chapi)
