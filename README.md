@@ -17,8 +17,9 @@ This API consists of:
 Because the Companies House API is rate-limited, it may be preferable to use the `RestClient` and persist the returned data for later use. Resource structs to unmarshal the JSON into can be found in the subpackage ch.
 
 ## Installation
+
 ```bash
-$ go get github.com/jimsmart/chapi
+go get github.com/jimsmart/chapi
 ```
 
 ```go
@@ -46,14 +47,14 @@ Then get the API key from the environment variable, using code similar to this:
 
 ```go
 func init() {
-	// Get the key from the environment variable.
-	apiKey := os.Getenv("COMPANIES_HOUSE_API_KEY")
-	if len(apiKey) == 0 {
-		panic("COMPANIES_HOUSE_API_KEY environment variable not set")
-	}
-	// Setting chapi.APIKey provides a default key for all clients.
-	// If instead you wish to use a unique key per client, see chapi.NewClientWithKey.
-	chapi.APIKey = apiKey
+    // Get the key from the environment variable.
+    apiKey := os.Getenv("COMPANIES_HOUSE_API_KEY")
+    if len(apiKey) == 0 {
+        panic("COMPANIES_HOUSE_API_KEY environment variable not set")
+    }
+    // Setting chapi.APIKey provides a default key for all clients.
+    // If instead you wish to use a unique key per client, see chapi.NewClientWithKey.
+    chapi.APIKey = apiKey
 }
 ```
 
@@ -70,12 +71,12 @@ import "github.com/jimsmart/chapi"
 chapi.APIKey = "your_Companies_House_API_key"
 
 func main() {
-	ch := chapi.NewClient()
-	res, err := ch.Search("Richard Branson", 1, -1)
-	if err != nil {
-		panic(err)
-	}
-	// TODO do something with results
+    ch := chapi.NewClient()
+    res, err := ch.Search("Richard Branson", 1, -1)
+    if err != nil {
+        panic(err)
+    }
+    // TODO do something with results
 }
 ```
 
@@ -92,3 +93,7 @@ To run the tests execute `go test` inside the project folder.
 ## License
 
 Package chapi is copyright 2016-2017 by Jim Smart and released under the [MIT License](LICENSE.md)
+
+## History
+
+- v0.0.1 (2021-04-19) Use Go modules. Enable CI using GitHub Actions. Remove Travis.
