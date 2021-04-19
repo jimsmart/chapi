@@ -536,7 +536,7 @@ var _ = Describe("Client", func() {
 							"AddressLine1": Not(Equal("")),
 							"Locality":     Not(Equal("")),
 							"PostalCode":   Not(Equal("")),
-							"Country":      Equal("England"),
+							"Country":      Equal("United Kingdom"),
 						}),
 						"NaturesOfControl": ContainElement("ownership-of-shares-75-to-100-percent"),
 						"Links": MatchFields(IgnoreExtras, Fields{
@@ -581,7 +581,7 @@ var _ = Describe("Client", func() {
 						"AddressLine1": Not(Equal("")),
 						"Locality":     Not(Equal("")),
 						"PostalCode":   Not(Equal("")),
-						"Country":      Equal("England"),
+						"Country":      Equal("United Kingdom"),
 					}),
 					"Identification": MatchFields(IgnoreExtras, Fields{
 						"CountryRegistered":  Not(Equal("")),
