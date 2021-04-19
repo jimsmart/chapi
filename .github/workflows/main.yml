@@ -38,6 +38,8 @@ jobs:
     
     # Run tests
     - name: Run tests
+      env:
+        COMPANIES_HOUSE_API_KEY: ${{ secrets.COMPANIES_HOUSE_API_KEY }}
       run: go test -race -coverprofile=coverage.txt -covermode=atomic
 
     # Upload coverage report to Codecov
